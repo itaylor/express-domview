@@ -10,8 +10,7 @@ A view engine for express that allows you to write your views as standard JavaSc
 
 ###Design Goals:
 * Make it possible to use a DOM builder and JavaScript to emit HTML from the server side.
-* Make it possible to create libraries of commonly used rendering functions that can be used client or server
-side.
+* Make it possible to create libraries of commonly used rendering functions that can be used client or server side.
 * Make it possible to bind events to DOM nodes from the server side and have them be handled on the client side.
 * Keep boilerplate JavaScript in the "views" to the absolute minimum.
 * Allow for the use of a real debugger, and standard JS tools in view code. (I may not quite have achieved this yet)
@@ -19,10 +18,9 @@ side.
 
 ###WTF?  This is the stupidest idea I've ever heard!  Why would you want to write views in JavaScript and not a templating language designed specifically for rendering HTML?
 * Well, I don't like templating languages.
-** They require you to learn a new syntax and language.
-** They often times end up a mix of with complex code interspersed in templating constructs that makes them hard
-to read and understand.
-** They rarely, if ever, are debuggable by any method other than "print and see" debugging. 
+  * They require you to learn a new syntax and language.
+  * They often times end up a mix of with complex code interspersed in templating constructs that makes them hard to read and understand.
+  * They rarely, if ever, are debuggable by any method other than "print and see" debugging. 
 * The problem that templating languages seek to solve is that it is difficult to create properly formatted HTML
 from traditional programming language syntax.  I think that problem is adequately addressed by using a good DOM
 builder library, so a templating language is not necessary.
