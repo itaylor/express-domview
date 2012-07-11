@@ -17,8 +17,7 @@ side.
 * Allow for the use of a real debugger, and standard JS tools in view code. (I may not quite have achieved this yet)
 * Simple and approachable codebase.
 
-###WTF?  This is the stupidest idea I've ever heard!  Why would you want to write views in JavaScript and not a 
-templating language designed specifically for rendering HTML?
+###WTF?  This is the stupidest idea I've ever heard!  Why would you want to write views in JavaScript and not a templating language designed specifically for rendering HTML?
 * Well, I don't like templating languages.
 ** They require you to learn a new syntax and language.
 ** They often times end up a mix of with complex code interspersed in templating constructs that makes them hard
@@ -30,8 +29,7 @@ builder library, so a templating language is not necessary.
 * If you're unconvinced and still think this a stupid idea, use Jade. it's a very nice templating 
 language/view engine that will probably make you very happy.
 
-###Ok, well then why do you need a view engine at all?  Why not just emit the HTML with response.send and build 
-the HTML in your routing methods? 
+###Ok, well then why do you need a view engine at all?  Why not just emit the HTML with response.send and build the HTML in your routing methods? 
 * Although I prefer to create views with JS code, the MVC paradigm still makes sense.  Separating business
 logic from display logic simplifies life.
 * Also, the view engine gives me a chance to eliminate boilerplate of setup and teardown of the DOM as well.
