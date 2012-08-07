@@ -24,8 +24,9 @@ var CodeViewEngine = function (ownerModule){
     return _intermediateRenderFn || (intermediateRenderFn = function (htmlOrNode){return htmlOrNode;});
   };
   
+  
   that.createContext = function (opts){
-   var ctx = vm.createContext();
+   var ctx = {};
    ctx.console = console;
    ctx.require = ownerModule.require.bind(ownerModule);
    ctx.setTimeout= setTimeout;
@@ -36,22 +37,28 @@ var CodeViewEngine = function (ownerModule){
    ctx.__dirname = path.dirname(opts.filename);
    ctx.locals = ctx;
    return ctx;
-  }
+  };
+  that.destroyContext = function (context){
+    context.locals = null;
+    console.log("destroying context");
+  };
   
   that.compile = function (str, opts){
-    try{
-      var script = vm.createScript(str, null, opts.filename, true);
-    }catch(e){
-      e.message = "Syntax error compiling code view: '" + opts.filename + "'. see error log for details;";
-      throw e;
-    }
     opts.docType = opts.docType || "<!DOCTYPE html>\n";
+    var isLayout = opts.isLayout;
+    var filename = opts.filename;
+    var script;
+    try{
+      script = vm.createScript(str, filename, true);
+    }catch(e){
+      throw new Error("error creating script " + filename, e);
+    }
     return function (locals){
       var context = locals._context || that.createContext(opts);
       _.defaults(context, locals);
       locals._context = context;
       var cleanContext = false;
-      if(opts.isLayout || (!locals.layout)){
+      if(isLayout || (!locals.layout)){
         context.render = that.generateRenderFinal(opts);
         cleanContext = true;
       }else{
@@ -59,18 +66,18 @@ var CodeViewEngine = function (ownerModule){
       }
       var result;
       try{
-        var result = script.runInContext(context);
+        result = script.runInNewContext(context);
       }catch(e){
-        e.message = "Error rendering '" +opts.filename + "' \n"+  e.message;
-        throw(e);
+        console.error("Error rendering '" + filename + "' \n", e);
+        throw e;
       }
       if(!result && that.warnings){
-       console.warn("view evaluation returned null or empty result on code view" +opts.filename +", this is usually a bug.");
+       console.warn("view evaluation returned null or empty result on code view" + filename +", this is usually a bug.");
       }
       if(cleanContext){
         //break circular references to help GC.
         locals._context = null;
-        context.locals = null;
+        that.destroyContext(context);
         context = null;
       }
       return result;    

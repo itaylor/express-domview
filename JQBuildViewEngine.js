@@ -37,7 +37,16 @@ var JQBuildViewEngine = function (ownerModule){
       return elem;  
     });
     return context;
-  }
+  };
+  that.superDestroyContext = that.destroyContext;
+  that.destroyContext = function (context){
+    if(context.document.destroy){
+      context.document.destroy()
+    };
+    context.document = null;
+    context.$b = null;
+    that.superDestroyContext(context);
+  };
   return that;
 };
 
